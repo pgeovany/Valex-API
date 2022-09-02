@@ -11,6 +11,11 @@ async function apiKeyValidator(
   if (!apiKey) {
     return res.status(httpStatus.BAD_REQUEST).send('Missing x-api-key header.');
   }
+
+  res.locals = {
+    apiKey,
+  };
+
   next();
 }
 

@@ -1,9 +1,13 @@
 import { Request, Response } from 'express';
 import httpStatus from '../utils/httpStatus';
-// import * as cardRepository from '../repositories/cardRepository';
+import * as cardService from '../services/cardService';
 
 async function newCard(req: Request, res: Response) {
-  res.sendStatus(httpStatus.OK);
+  const { apiKey } = res.locals;
+  const { employeeId, cardType } = req.body;
+
+  await cardService.generateNewCard(employeeId, cardType, apiKey);
+  res.sendStatus(httpStatus.CREATED);
 }
 
 export { newCard };
