@@ -20,4 +20,12 @@ const activateCardSchema = joi.object({
     .required(),
 });
 
-export { createCardSchema, activateCardSchema };
+const blockCardSchema = joi.object({
+  id: joi.number().required(),
+  password: joi
+    .string()
+    .pattern(/^[0-9]{4}$/)
+    .required(),
+});
+
+export { createCardSchema, activateCardSchema, blockCardSchema };

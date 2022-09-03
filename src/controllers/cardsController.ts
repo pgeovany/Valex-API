@@ -25,4 +25,12 @@ async function getCardBalanceAndTransactions(req: Request, res: Response) {
   res.status(httpStatus.OK).send(result);
 }
 
-export { newCard, activateCard, getCardBalanceAndTransactions };
+async function blockCard(req: Request, res: Response) {
+  const { id, password } = req.body;
+
+  await cardService.blockCard(id, password);
+
+  res.sendStatus(httpStatus.OK);
+}
+
+export { newCard, activateCard, getCardBalanceAndTransactions, blockCard };

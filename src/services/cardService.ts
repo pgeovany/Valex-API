@@ -108,4 +108,22 @@ function getCardBalance(
   return totalRechargesAmount - totalPaymentsAmount;
 }
 
-export { generateNewCard, activateCard, getCardTransactions };
+async function blockCard(id: number, password: string) {
+  const card = await cardUtils.getCardById(id);
+
+  await cardUtils.validateCardPassword(card.password, password);
+  cardUtils.isExpired(card.expirationDate);
+
+  if (card.isBlocked) {
+    throw {
+      type: 'error_bad_request',
+      message: 'This card has already been blocked!',
+    };
+  }
+
+  await cardRepository.update(id, { isBlocked: true });
+
+  return;
+}
+
+export { generateNewCard, activateCard, getCardTransactions, blockCard };

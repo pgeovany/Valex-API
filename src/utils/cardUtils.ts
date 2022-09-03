@@ -3,6 +3,7 @@ import * as companyRepository from '../repositories/companyRepository';
 import * as employeeRepository from '../repositories/employeeRepository';
 import cryptr from '../utils/cryptr';
 import dayjs from 'dayjs';
+import bcrypt from 'bcrypt';
 
 async function validateNewCardInfo(
   employeeId: number,
@@ -84,10 +85,25 @@ function validateCardCvv(encryptedCvv: string, receivedCvv: string) {
   };
 }
 
+async function validateCardPassword(
+  hashedPassword: string,
+  receivedPassword: string
+) {
+  if (await bcrypt.compareSync(receivedPassword, hashedPassword)) {
+    return;
+  }
+
+  throw {
+    type: 'error_unauthorized',
+    message: 'Invalid credentials!',
+  };
+}
+
 export {
   validateNewCardInfo,
   getCardById,
   isExpired,
   isActivated,
   validateCardCvv,
+  validateCardPassword,
 };
