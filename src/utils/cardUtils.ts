@@ -26,6 +26,13 @@ async function validateNewCardInfo(
     };
   }
 
+  if (employee.companyId !== company.id) {
+    throw {
+      type: 'error_unauthorized',
+      message: 'Invalid employee!',
+    };
+  }
+
   const card = await cardRepository.findByTypeAndEmployeeId(
     cardType,
     employeeId
