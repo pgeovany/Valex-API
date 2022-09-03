@@ -1,6 +1,10 @@
 import { Router } from 'express';
 import validateSchema from '../middlewares/schemaValidator';
-import { activateCard, newCard } from '../controllers/cardsController';
+import {
+  activateCard,
+  getCardBalanceAndTransactions,
+  newCard,
+} from '../controllers/cardsController';
 import { activateCardSchema, createCardSchema } from '../utils/schemas';
 import apiKeyValidator from '../middlewares/apiKeyValidator';
 
@@ -18,5 +22,7 @@ cardsRouter.post(
   validateSchema(activateCardSchema),
   activateCard
 );
+
+cardsRouter.get('/cards/:id', getCardBalanceAndTransactions);
 
 export default cardsRouter;

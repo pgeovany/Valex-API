@@ -17,4 +17,12 @@ async function activateCard(req: Request, res: Response) {
   res.sendStatus(httpStatus.OK);
 }
 
-export { newCard, activateCard };
+async function getCardBalanceAndTransactions(req: Request, res: Response) {
+  const { id } = req.params;
+
+  const result = await cardService.getCardTransactions(Number(id));
+
+  res.status(httpStatus.OK).send(result);
+}
+
+export { newCard, activateCard, getCardBalanceAndTransactions };

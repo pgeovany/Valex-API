@@ -5,6 +5,8 @@ import encrypt from '../utils/encrypt';
 import * as cardRepository from '../repositories/cardRepository';
 import * as employeeRepository from '../repositories/employeeRepository';
 import * as cardUtils from '../utils/cardUtils';
+import * as paymentRepository from '../repositories/paymentRepository';
+import * as rechargeRepository from '../repositories/rechargeRepository';
 
 async function generateNewCard(
   employeeId: number,
@@ -79,4 +81,31 @@ function getFormattedName(fullName: string): string {
   return [firstName, ...middleNamesInitials, lastName].join(' ');
 }
 
-export { generateNewCard, activateCard };
+async function getCardTransactions(id: number) {
+  const payments = await paymentRepository.findByCardId(id);
+  const recharges = await rechargeRepository.findByCardId(id);
+
+  const balance = getCardBalance(payments, recharges);
+
+  return { balance, transactions: payments, recharges };
+}
+
+function getCardBalance(
+  payments: paymentRepository.Payment[],
+  recharges: rechargeRepository.Recharge[]
+) {
+  let totalPaymentsAmount: number = 0;
+  let totalRechargesAmount: number = 0;
+
+  payments.forEach((payment: paymentRepository.Payment) => {
+    totalPaymentsAmount += payment.amount;
+  });
+
+  recharges.forEach((recharge: rechargeRepository.Recharge) => {
+    totalRechargesAmount += recharge.amount;
+  });
+
+  return totalRechargesAmount - totalPaymentsAmount;
+}
+
+export { generateNewCard, activateCard, getCardTransactions };
