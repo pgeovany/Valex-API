@@ -1,6 +1,6 @@
 import * as cardRepository from '../repositories/cardRepository';
-import * as companyRepository from '../repositories/companyRepository';
-import * as employeeRepository from '../repositories/employeeRepository';
+import * as employeeService from '../services/employeeService';
+import * as companyService from '../services/companyService';
 import cryptr from '../utils/cryptr';
 import dayjs from 'dayjs';
 import bcrypt from 'bcrypt';
@@ -10,21 +10,8 @@ async function validateNewCardInfo(
   cardType: cardRepository.TransactionTypes,
   apiKey: string
 ) {
-  const company = await companyRepository.findByApiKey(apiKey);
-  if (!company) {
-    throw {
-      type: 'error_unauthorized',
-      message: 'Invalid API key!',
-    };
-  }
-
-  const employee = await employeeRepository.findById(employeeId);
-  if (!employee) {
-    throw {
-      type: 'error_not_found',
-      message: 'Employee not found!',
-    };
-  }
+  const employee = await employeeService.getEmployeeById(employeeId);
+  const company = await companyService.getCompanyByApiKey(apiKey);
 
   if (employee.companyId !== company.id) {
     throw {
