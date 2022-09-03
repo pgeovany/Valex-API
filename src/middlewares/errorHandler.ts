@@ -8,6 +8,8 @@ function errorHandler(
   next: NextFunction
 ) {
   switch (error.type) {
+    case 'error_bad_request':
+      return res.status(httpStatus.BAD_REQUEST).send(error.message);
     case 'error_unauthorized':
       return res.status(httpStatus.UNAUTHORIZED).send(error.message);
     case 'error_not_found':

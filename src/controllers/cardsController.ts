@@ -10,4 +10,11 @@ async function newCard(req: Request, res: Response) {
   res.sendStatus(httpStatus.CREATED);
 }
 
-export { newCard };
+async function activateCard(req: Request, res: Response) {
+  const { id, cvv, password } = req.body;
+
+  await cardService.activateCard(id, cvv, password);
+  res.sendStatus(httpStatus.OK);
+}
+
+export { newCard, activateCard };
