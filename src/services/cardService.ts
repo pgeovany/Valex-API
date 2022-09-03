@@ -126,4 +126,28 @@ async function blockCard(id: number, password: string) {
   return;
 }
 
-export { generateNewCard, activateCard, getCardTransactions, blockCard };
+async function unblockCard(id: number, password: string) {
+  const card = await cardUtils.getCardById(id);
+
+  await cardUtils.validateCardPassword(card.password, password);
+  cardUtils.isExpired(card.expirationDate);
+
+  if (!card.isBlocked) {
+    throw {
+      type: 'error_bad_request',
+      message: 'This card is not blocked!',
+    };
+  }
+
+  await cardRepository.update(id, { isBlocked: false });
+
+  return;
+}
+
+export {
+  generateNewCard,
+  activateCard,
+  getCardTransactions,
+  blockCard,
+  unblockCard,
+};

@@ -5,6 +5,7 @@ import {
   blockCard,
   getCardBalanceAndTransactions,
   newCard,
+  unblockCard,
 } from '../controllers/cardsController';
 import {
   activateCardSchema,
@@ -22,14 +23,19 @@ cardsRouter.post(
   newCard
 );
 
+cardsRouter.get('/cards/:id', getCardBalanceAndTransactions);
+
 cardsRouter.patch(
   '/cards/activate',
   validateSchema(activateCardSchema),
   activateCard
 );
 
-cardsRouter.get('/cards/:id', getCardBalanceAndTransactions);
-
 cardsRouter.patch('/cards/block', validateSchema(blockCardSchema), blockCard);
+cardsRouter.patch(
+  '/cards/unblock',
+  validateSchema(blockCardSchema),
+  unblockCard
+);
 
 export default cardsRouter;
