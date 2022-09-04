@@ -95,6 +95,7 @@ function getFormattedName(fullName: string): string {
 }
 
 async function getCardTransactions(id: number) {
+  await getCardById(id);
   const payments = await paymentRepository.findByCardId(id);
   const recharges = await rechargeRepository.findByCardId(id);
 
