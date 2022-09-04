@@ -9,9 +9,5 @@
   },
   "ts-node": {
     "esm": true
-  },
-  "scripts": {
-    "build": "tsc",
-    "start": "node dist/app.js"
   }
 }
