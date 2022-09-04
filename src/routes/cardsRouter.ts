@@ -5,12 +5,14 @@ import {
   blockCard,
   getCardBalanceAndTransactions,
   newCard,
+  rechargeCard,
   unblockCard,
 } from '../controllers/cardsController';
 import {
   activateCardSchema,
   blockCardSchema,
   createCardSchema,
+  rechargeCardSchema,
 } from '../utils/schemas';
 import apiKeyValidator from '../middlewares/apiKeyValidator';
 
@@ -36,6 +38,13 @@ cardsRouter.patch(
   '/cards/unblock',
   validateSchema(blockCardSchema),
   unblockCard
+);
+
+cardsRouter.post(
+  '/cards/recharge',
+  apiKeyValidator,
+  validateSchema(rechargeCardSchema),
+  rechargeCard
 );
 
 export default cardsRouter;

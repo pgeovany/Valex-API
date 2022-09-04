@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import httpStatus from '../utils/httpStatus';
 import * as cardService from '../services/cardService';
+import * as rechargeService from '../services/rechargeService';
 
 async function newCard(req: Request, res: Response) {
   const { apiKey } = res.locals;
@@ -41,10 +42,20 @@ async function unblockCard(req: Request, res: Response) {
   res.sendStatus(httpStatus.OK);
 }
 
+async function rechargeCard(req: Request, res: Response) {
+  const { apiKey } = res.locals;
+  const { id, amount } = req.body;
+
+  await rechargeService.rechargeCard(id, amount, apiKey);
+
+  res.sendStatus(httpStatus.OK);
+}
+
 export {
   newCard,
   activateCard,
   getCardBalanceAndTransactions,
   blockCard,
   unblockCard,
+  rechargeCard,
 };

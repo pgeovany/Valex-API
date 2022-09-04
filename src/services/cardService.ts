@@ -8,6 +8,19 @@ import * as cardUtils from '../utils/cardUtils';
 import * as paymentRepository from '../repositories/paymentRepository';
 import * as rechargeRepository from '../repositories/rechargeRepository';
 
+async function getCardById(id: number) {
+  const card = await cardRepository.findById(id);
+
+  if (!card) {
+    throw {
+      type: 'error_not_found',
+      message: 'Card not found!',
+    };
+  }
+
+  return card;
+}
+
 async function generateNewCard(
   employeeId: number,
   cardType: cardRepository.TransactionTypes,
@@ -30,7 +43,7 @@ async function activateCard(id: number, cvv: string, password: string) {
   cardUtils.validateCardCvv(card.securityCode, cvv);
   cardUtils.isExpired(card.expirationDate);
 
-  if (cardUtils.isActivated(card.password)) {
+  if (card.password) {
     throw {
       type: 'error_bad_request',
       message: 'This card has already been activated!',
@@ -150,4 +163,5 @@ export {
   getCardTransactions,
   blockCard,
   unblockCard,
+  getCardById,
 };

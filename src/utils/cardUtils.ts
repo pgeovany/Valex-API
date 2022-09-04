@@ -61,11 +61,16 @@ function isExpired(expirationDate: string) {
   };
 }
 
-function isActivated(password: string) {
-  if (password !== null) {
+function isActive(password: string) {
+  if (password) {
     return true;
   }
-  return false;
+
+  throw {
+    type: 'error_bad_request',
+    message:
+      'You need to activate the card in order to proceed with this request!',
+  };
 }
 
 function validateCardCvv(encryptedCvv: string, receivedCvv: string) {
@@ -97,7 +102,7 @@ export {
   validateNewCardInfo,
   getCardById,
   isExpired,
-  isActivated,
+  isActive,
   validateCardCvv,
   validateCardPassword,
 };

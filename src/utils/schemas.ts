@@ -28,4 +28,14 @@ const blockCardSchema = joi.object({
     .required(),
 });
 
-export { createCardSchema, activateCardSchema, blockCardSchema };
+const rechargeCardSchema = joi.object({
+  id: joi.number().required(),
+  amount: joi.number().greater(0).required(),
+});
+
+export {
+  createCardSchema,
+  activateCardSchema,
+  blockCardSchema,
+  rechargeCardSchema,
+};
