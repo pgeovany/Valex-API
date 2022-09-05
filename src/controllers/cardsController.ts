@@ -7,8 +7,9 @@ async function newCard(req: Request, res: Response) {
   const { apiKey } = res.locals;
   const { employeeId, cardType } = req.body;
 
-  await cardService.generateNewCard(employeeId, cardType, apiKey);
-  res.sendStatus(httpStatus.CREATED);
+  const card = await cardService.generateNewCard(employeeId, cardType, apiKey);
+
+  res.status(httpStatus.CREATED).send(card);
 }
 
 async function activateCard(req: Request, res: Response) {

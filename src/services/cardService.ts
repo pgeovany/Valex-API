@@ -33,8 +33,15 @@ async function generateNewCard(
   );
 
   const card = generateCardInfo(employee, cardType);
+  const { id } = await cardRepository.insert(card);
 
-  await cardRepository.insert(card);
+  return {
+    cardId: id,
+    cardholderName: card.cardholderName,
+    number: card.number,
+    cvv: cryptr.decrypt(card.securityCode),
+    type: card.type,
+  };
 }
 
 async function activateCard(id: number, cvv: string, password: string) {
